@@ -56,6 +56,7 @@ jobs:
       with:
         context: "postgres-appliance/"
         load: true
+        push: true
         tags: ${{ steps.image.outputs.NAME }}
         build-args: TIMESCALEDB_APACHE_ONLY=false
 
@@ -64,12 +65,3 @@ jobs:
         SPILO_TEST_IMAGE: "${{ steps.image.outputs.NAME }}"
       run: |
         bash postgres-appliance/tests/test_spilo.sh 
-
-    - name: Build arm64 additionaly and push multiarch image to ghcr
-      uses: docker/build-push-action@v6
-      with:
-        context: "postgres-appliance/"
-        push: true
-        tags: "${{ steps.image.outputs.NAME }}"
-        platforms: linux/amd64,linux/arm64
-        build-args: TIMESCALEDB_APACHE_ONLY=false
